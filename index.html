@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WorkTrack - Employee Time & Monitoring</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4f46e5">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =========================================================
+     LOGIN SCREEN
+========================================================= -->
+
+<div class="login-screen" id="loginScreen">
+
+    <div class="login-box">
+
+        <div class="login-logo">
+            <div class="login-logo-icon">⏱</div>
+            WorkTrack
+        </div>
+
+        <h1>Welcome back</h1>
+
+        <p class="subtitle">
+            Sign in to your employee management system.
+        </p>
+
+        <div class="login-error" id="loginError">
+            Invalid email or password.
+        </div>
+
+        <form id="loginForm">
+
+            <div class="login-field">
+                <label>Email</label>
+
+                <input
+                    id="loginEmail"
+                    type="email"
+                    placeholder="you@company.com"
+                    required
+                >
+            </div>
+
+            <div class="login-field">
+                <label>Password</label>
+
+                <input
+                    id="loginPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    required
+                >
+            </div>
+
+            <button class="login-button" type="submit">
+                Sign In
+            </button>
+
+        </form>
+
+        <div class="auth-switch">
+            Don't have an account?
+            <button
+                type="button"
+                onclick="showRegisterScreen()"
+            >
+                Create Account
+            </button>
+        </div>
+
+        <div class="demo-login">
+
+            <strong>Demo Accounts</strong>
+
+            <br><br>
+
+            <strong>ADMIN</strong><br>
+            Email: admin@worktrack.com<br>
+            Password: admin123
+
+            <br><br>
+
+            <strong>STAFF - Mara</strong><br>
+            Email: mara@company.com<br>
+            Password: mara123
+
+            <br><br>
+
+            <strong>STAFF - JP</strong><br>
+            Email: jp@company.com<br>
+            Password: jpk123
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     CREATE ACCOUNT SCREEN
+========================================================= -->
+
+<div class="login-screen" id="registerScreen" style="display:none;">
+
+    <div class="login-box">
+
+        <div class="login-logo">
+            <div class="login-logo-icon">⏱</div>
+            WorkTrack
+        </div>
+
+        <h1>Create your account</h1>
+
+        <p class="subtitle">
+            Create a staff account to start tracking your work time.
+        </p>
+
+        <div class="login-error" id="registerError"></div>
+
+        <form id="registerForm">
+
+            <div class="login-field">
+                <label>Full Name</label>
+
+                <input
+                    id="registerName"
+                    type="text"
+                    placeholder="John Smith"
+                    required
+                >
+            </div>
+
+            <div class="login-field">
+                <label>Department</label>
+
+                <select id="registerDepartment" required>
+
+                    <option value="">
+                        Select department
+                    </option>
+
+                    <option>Development</option>
+                    <option>Design</option>
+                    <option>Marketing</option>
+                    <option>Finance</option>
+                    <option>Human Resources</option>
+                    <option>Operations</option>
+                    <option>Sales</option>
+
+                </select>
+
+            </div>
+
+            <div class="login-field">
+                <label>Email</label>
+
+                <input
+                    id="registerEmail"
+                    type="email"
+                    placeholder="you@company.com"
+                    required
+                >
+            </div>
+
+            <div class="login-field">
+                <label>Password</label>
+
+                <input
+                    id="registerPassword"
+                    type="password"
+                    minlength="6"
+                    placeholder="Minimum 6 characters"
+                    required
+                >
+            </div>
+
+            <div class="login-field">
+                <label>Confirm Password</label>
+
+                <input
+                    id="registerConfirmPassword"
+                    type="password"
+                    minlength="6"
+                    placeholder="Repeat your password"
+                    required
+                >
+            </div>
+
+            <button class="login-button" type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="auth-switch">
+            Already have an account?
+            <button
+                type="button"
+                onclick="showLoginScreen()"
+            >
+                Sign In
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     APPLICATION
+========================================================= -->
+
+<div class="app" id="app">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ⏱
+            </div>
+
+            <span>WorkTrack</span>
+
+        </div>
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+        <ul class="nav">
+
+            <li>
+                <button class="nav-btn active" data-page="dashboard">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </button>
+            </li>
+
+            <li>
+                <button class="nav-btn" data-page="attendance">
+                    <span class="nav-icon">◷</span>
+                    <span>Attendance</span>
+                </button>
+            </li>
+
+            <li class="admin-only">
+                <button class="nav-btn" data-page="employees">
+                    <span class="nav-icon">♙</span>
+                    <span>Employees</span>
+                </button>
+            </li>
+
+            <li>
+                <button class="nav-btn" data-page="timesheets">
+                    <span class="nav-icon">▤</span>
+                    <span>Timesheets</span>
+                </button>
+            </li>
+
+            <li class="admin-only">
+                <button class="nav-btn" data-page="schedules">
+                    <span class="nav-icon">▣</span>
+                    <span>Schedules</span>
+                </button>
+            </li>
+
+            <li class="admin-only">
+                <button class="nav-btn" data-page="monitoring">
+                    <span class="nav-icon">◉</span>
+                    <span>Monitoring</span>
+                </button>
+            </li>
+
+            <li class="admin-only">
+                <button class="nav-btn" data-page="reports">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports</span>
+                </button>
+            </li>
+
+        </ul>
+
+        <div class="menu-title">
+            System
+        </div>
+
+        <ul class="nav">
+
+            <li class="admin-only">
+                <button class="nav-btn" data-page="settings">
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </button>
+            </li>
+
+            <li>
+                <button onclick="logout()">
+                    <span class="nav-icon">↪</span>
+                    <span>Log Out</span>
+                </button>
+            </li>
+
+        </ul>
+
+        <div class="sidebar-user">
+
+            <div class="avatar" id="sidebarAvatar">
+                AD
+            </div>
+
+            <div class="profile-info">
+
+                <strong id="sidebarName">
+                    Administrator
+                </strong>
+
+                <span id="sidebarRole">
+                    Admin
+                </span>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="search">
+
+                <span>⌕</span>
+
+                <input
+                    id="searchInput"
+                    placeholder="Search employees..."
+                >
+
+            </div>
+
+            <div class="top-right">
+
+                <div class="live-clock" id="currentClock">
+                    00:00:00
+                </div>
+
+                <div class="notification">
+                    ♧
+                    <div class="notification-dot"></div>
+                </div>
+
+                <div class="profile">
+
+                    <div class="avatar" id="topAvatar">
+                        AD
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong id="topName">
+                            Administrator
+                        </strong>
+
+                        <span id="topRole">
+                            Admin
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="content">
+
+            <!-- DASHBOARD -->
+
+            <div class="page active" id="dashboard">
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h1 id="dashboardTitle">
+                            Dashboard
+                        </h1>
+
+                        <p id="dashboardSubtitle">
+                            Employee time and attendance overview.
+                        </p>
+
+                    </div>
+
+                    <div class="actions admin-only-action">
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="openEmployeeModal()"
+                        >
+                            + Add Employee
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="clock-panel">
+
+                    <div>
+
+                        <h2>
+                            My Time Today
+                        </h2>
+
+                        <p id="clockStatus">
+                            You are currently clocked out.
+                        </p>
+
+                        <div class="big-clock" id="workTimer">
+                            00:00:00
+                        </div>
+
+                    </div>
+
+                    <div class="clock-actions">
+
+                        <button
+                            class="clock-in-btn"
+                            onclick="clockInCurrentUser()"
+                        >
+                            Clock In
+                        </button>
+
+                        <button
+                            class="break-btn"
+                            onclick="toggleCurrentBreak()"
+                            id="breakButton"
+                        >
+                            Break
+                        </button>
+
+                        <button
+                            class="clock-out-btn"
+                            onclick="clockOutCurrentUser()"
+                        >
+                            Clock Out
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="stats admin-stats">
+
+                    <div class="stat">
+
+                        <div class="stat-label">
+                            Total Employees
+                        </div>
+
+                        <div class="stat-number" id="totalEmployees">
+                            0
+                        </div>
+
+                        <div class="stat-sub green-text">
+                            Active workforce
+                        </div>
+
+                    </div>
+
+                    <div class="stat">
+
+                        <div class="stat-label">
+                            Present Today
+                        </div>
+
+                        <div class="stat-number" id="presentEmployees">
+                            0
+                        </div>
+
+                        <div class="stat-sub green-text">
+                            Currently present
+                        </div>
+
+                    </div>
+
+                    <div class="stat">
+
+                        <div class="stat-label">
+                            On Break
+                        </div>
+
+                        <div class="stat-number" id="breakEmployees">
+                            0
+                        </div>
+
+                        <div class="stat-sub orange-text">
+                            Currently on break
+                        </div>
+
+                    </div>
+
+                    <div class="stat">
+
+                        <div class="stat-label">
+                            Absent
+                        </div>
+
+                        <div class="stat-number" id="absentEmployees">
+                            0
+                        </div>
+
+                        <div class="stat-sub red-text">
+                            Not clocked in
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="admin-dashboard">
+
+                    <div class="grid-2">
+
+                        <div class="card">
+
+                            <div class="card-header">
+
+                                <h2>
+                                    Attendance Overview
+                                </h2>
+
+                                <span>
+                                    Current week
+                                </span>
+
+                            </div>
+
+                            <div class="chart" id="attendanceChart"></div>
+
+                        </div>
+
+                        <div class="card">
+
+                            <div class="card-header">
+
+                                <h2>
+                                    Live Monitoring
+                                </h2>
+
+                                <span class="green-text">
+                                    ● Live
+                                </span>
+
+                            </div>
+
+                            <div id="liveMonitoring"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card staff-dashboard">
+
+                    <div class="card-header">
+
+                        <h2>
+                            My Attendance
+                        </h2>
+
+                        <span>
+                            Personal record
+                        </span>
+
+                    </div>
+
+                    <div id="personalAttendance"></div>
+
+                </div>
+
+                <div class="table-card admin-dashboard">
+
+                    <div class="table-header">
+
+                        <h2>
+                            Today's Employee Activity
+                        </h2>
+
+                        <button
+                            class="btn"
+                            onclick="showPage('attendance')"
+                        >
+                            View Attendance →
+                        </button>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Clock In</th>
+                                    <th>Clock Out</th>
+                                    <th>Hours</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="dashboardTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ATTENDANCE -->
+
+            <div class="page" id="attendance">
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h1>
+                            Attendance
+                        </h1>
+
+                        <p>
+                            Track daily employee attendance.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="btn btn-primary admin-only-action"
+                        onclick="exportCSV()"
+                    >
+                        ↓ Export CSV
+                    </button>
+
+                </div>
+
+                <div class="table-card">
+
+                    <div class="table-header">
+
+                        <h2>
+                            Today's Attendance
+                        </h2>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Clock In</th>
+                                    <th>Clock Out</th>
+                                    <th>Hours</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="attendanceTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- EMPLOYEES -->
+
+            <div class="page" id="employees">
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h1>
+                            Employees
+                        </h1>
+
+                        <p>
+                            Manage staff accounts and employee records.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="openEmployeeModal()"
+                    >
+                        + Add Staff Account
+                    </button>
+
+                </div>
+
+                <div class="table-card">
+
+                    <div class="table-header">
+
+                        <h2>
+                            Staff Directory
+                        </h2>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Email</th>
+                                    <th>ID</th>
+                                    <th>Account</th>
+                                    <th>Actions</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="employeeTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TIMESHEETS -->
+
+            <div class="page" id="timesheets">
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h1>
+                            Timesheets
+                        </h1>
+
+                        <p>
+                            Working hours and shift records.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="btn btn-primary admin-only-action"
+                        onclick="exportCSV()"
+                    >
+                        Export Timesheet
+                    </button>
+
+                </div>
+
+                <div class="stats">
+
+                    <div class="stat">
+                        <div class="stat-label">
+                            Total Hours
+                        </div>
+
+                        <div class="stat-number" id="totalHours">
+                            0h
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-label">
+                            Average Hours
+                        </div>
+
+                        <div class="stat-number" id="averageHours">
+                            0h
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-label">
+                            Working
+                        </div>
+
+                        <div class="stat-number" id="workingEmployees">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-label">
+                            Completed
+                        </div>
+
+                        <div class="stat-number" id="completedShifts">
+                            0
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="table-card">
+
+                    <div class="table-header">
+
+                        <h2>
+                            Today's Timesheets
+                        </h2>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Clock In</th>
+                                    <th>Clock Out</th>
+                                    <th>Hours</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="timesheetTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SCHEDULES -->
+
+            <div class="page" id="schedules">
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h1>
+                            Schedules
+                        </h1>
+
+                        <p>
+                            Manage staff working schedules.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="openScheduleModal()"
+                    >
+                        + Add Schedule
+                    </button>
+
+                </div>
+
+                <div class="table-card">
+
+                    <div class="table-header">
+
+                        <h2>
+                            Weekly Schedule
+                        </h2>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Monday</th>
+                                    <th>Tuesday</th>
+                                    <th>Wednesday</th>
+                                    <th>Thursday</th>
+                                    <th>Friday</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="scheduleTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- MONITORING -->
+
+            <div class="page" id="monitoring">
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h1>
+                            Live Monitoring
+                        </h1>
+
+                        <p>
+                            Current staff work status.
+                        </p>
+
+                    </div>
+
+                    <span class="status present">
+                        ● System Online
+                    </span>
+
+                </div>
+
+                <div class="grid-2">
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <h2>
+                                Staff Status
+                            </h2>
+
+                            <span>
+                                Live
+                            </span>
+
+                        </div>
+
+                        <div id="monitoringFull"></div>
+
+                    </div>
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <h2>
+                                Workforce Summary
+                            </h2>
+
+                        </div>
+
+                        <div id="monitoringSummary"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- REPORTS -->
+
+            <div class="page" id="reports">
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h1>
+                            Reports
+                        </h1>
+
+                        <p>
+                            Generate employee reports.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="grid-2">
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <h2>
+                                Attendance Report
+                            </h2>
+
+                        </div>
+
+                        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">
+                            Export today's attendance records.
+                        </p>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="exportCSV()"
+                        >
+                            Generate CSV
+                        </button>
+
+                    </div>
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <h2>
+                                Workforce Summary
+                            </h2>
+
+                        </div>
+
+                        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">
+                            Current workforce information.
+                        </p>
+
+                        <button
+                            class="btn"
+                            onclick="showPage('dashboard')"
+                        >
+                            View Dashboard
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SETTINGS -->
+
+            <div class="page" id="settings">
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h1>
+                            Settings
+                        </h1>
+
+                        <p>
+                            Configure your WorkTrack account.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="settings-grid">
+
+                    <div class="settings-nav">
+
+                        <button class="settings-tab active" data-settings="profileSettings">
+                            Profile
+                        </button>
+
+                        <button class="settings-tab" data-settings="companySettings">
+                            Company
+                        </button>
+
+                        <button class="settings-tab" data-settings="appearanceSettings">
+                            Appearance
+                        </button>
+
+                        <button class="settings-tab" data-settings="securitySettings">
+                            Security
+                        </button>
+
+                    </div>
+
+                    <div class="card">
+
+                        <div class="settings-section active" id="profileSettings">
+
+                            <div class="card-header">
+                                <h2>Profile Settings</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input id="profileName">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input id="profileEmail" type="email">
+                            </div>
+
+                            <button
+                                class="btn btn-primary"
+                                onclick="saveProfile()"
+                            >
+                                Save Profile
+                            </button>
+
+                        </div>
+
+                        <div class="settings-section" id="companySettings">
+
+                            <div class="card-header">
+                                <h2>Company Settings</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input id="companyName" value="My Company">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Company Email</label>
+                                <input id="companyEmail" type="email" value="admin@company.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Timezone</label>
+
+                                <select id="timezone">
+                                    <option>Asia/Manila</option>
+                                    <option>America/New_York</option>
+                                    <option>Europe/London</option>
+                                    <option>Asia/Tokyo</option>
+                                </select>
+                            </div>
+
+                            <button
+                                class="btn btn-primary"
+                                onclick="saveCompanySettings()"
+                            >
+                                Save Company
+                            </button>
+
+                        </div>
+
+                        <div class="settings-section" id="appearanceSettings">
+
+                            <div class="card-header">
+                                <h2>Appearance</h2>
+                            </div>
+
+                            <div class="setting-row">
+
+                                <div class="setting-label">
+                                    <strong>Dark Mode</strong>
+                                    <span>Use a darker interface.</span>
+                                </div>
+
+                                <label class="switch">
+
+                                    <input
+                                        type="checkbox"
+                                        id="darkMode"
+                                        onchange="toggleDarkMode()"
+                                    >
+
+                                    <span class="slider"></span>
+
+                                </label>
+
+                            </div>
+
+                            <div class="setting-row">
+
+                                <div class="setting-label">
+                                    <strong>Notifications</strong>
+                                    <span>Show system notifications.</span>
+                                </div>
+
+                                <label class="switch">
+
+                                    <input
+                                        type="checkbox"
+                                        id="notifications"
+                                        checked
+                                        onchange="saveAppearance()"
+                                    >
+
+                                    <span class="slider"></span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        <div class="settings-section" id="securitySettings">
+
+                            <div class="card-header">
+                                <h2>Security</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input id="currentPassword" type="password">
+                            </div>
+
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input id="newPassword" type="password">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input id="confirmPassword" type="password">
+                            </div>
+
+                            <button
+                                class="btn btn-primary"
+                                onclick="changePassword()"
+                            >
+                                Change Password
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- =========================================================
+     EMPLOYEE MODAL
+========================================================= -->
+
+<div class="modal-overlay" id="employeeModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>
+                Create Staff Account
+            </h2>
+
+            <button
+                class="close"
+                onclick="closeEmployeeModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <form id="employeeForm">
+
+            <div class="form-group">
+                <label>Full Name</label>
+
+                <input
+                    id="employeeName"
+                    required
+                    placeholder="John Smith"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Department</label>
+
+                <select id="employeeDepartment">
+                    <option>Development</option>
+                    <option>Design</option>
+                    <option>Marketing</option>
+                    <option>Finance</option>
+                    <option>Human Resources</option>
+                    <option>Operations</option>
+                    <option>Sales</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Login Email</label>
+
+                <input
+                    id="employeeEmail"
+                    type="email"
+                    required
+                    placeholder="employee@company.com"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Login Password</label>
+
+                <input
+                    id="employeePassword"
+                    type="password"
+                    required
+                    minlength="6"
+                    placeholder="Minimum 6 characters"
+                >
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn"
+                    onclick="closeEmployeeModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Create Staff Account
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     SCHEDULE MODAL
+========================================================= -->
+
+<div class="modal-overlay" id="scheduleModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>
+                Add Schedule
+            </h2>
+
+            <button
+                class="close"
+                onclick="closeScheduleModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <form id="scheduleForm">
+
+            <div class="form-group">
+
+                <label>
+                    Employee
+                </label>
+
+                <select id="scheduleEmployee"></select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Start Time
+                </label>
+
+                <input
+                    id="scheduleStart"
+                    type="time"
+                    value="08:00"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    End Time
+                </label>
+
+                <input
+                    id="scheduleEnd"
+                    type="time"
+                    value="17:00"
+                >
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn"
+                    onclick="closeScheduleModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                >
+                    Save Schedule
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
